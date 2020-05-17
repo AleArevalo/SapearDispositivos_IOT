@@ -1,0 +1,11 @@
+{
+  "name": "control_latamdomotica",
+  "version": "1.0.0",
+  "description": "Aplicación control de latamdomotica.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "LatamCódigo",
+  "license": "ISC"
+}
