@@ -42,7 +42,7 @@ var client = mqtt.connect("mqtt://latamcodigo.com", options);
 client.on('connect', () => {
     console.log('>> MQTT - Conectado por WS! Exito!');
 
-    client.subscribe('values', { qos: 0 }, (error) => {
+    client.subscribe('+/#', { qos: 0 }, (error) => {
         if (!error) {
             console.log('>> MQTT - Suscripción exitosa!');
         } else {
