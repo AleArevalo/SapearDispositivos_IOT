@@ -1,6 +1,9 @@
 var mysql = require('mysql');
 var mqtt = require('mqtt');
 
+let UltimoTemp = 0;
+let UltimoHume = 0;
+
 //CREDENCIALES MYSQL
 var con = mysql.createConnection({
   host: "server.latamcodigo.com",
@@ -57,12 +60,17 @@ client.on('message', function (topic, message) {
     var temp = sp[0];
     var hume = sp[1];
 
-    //hacemos la consulta para insertar....
-    var query = "INSERT INTO registro_tp_hm(RegistroTemperatura, RegistroHumedad) VALUES ("+ temp + ", " + hume + ")";
-    con.query(query, function (err, result, fields) {
-      if (err) throw err;
-      console.log(">> MYSQL - Registro insertada correctamente");
-    });
+    if(UltimoTemp != temp && UltimoHume != hume){
+        //Registramos nuevos valores globales
+        UltimoTemp = temp;
+        UltimoHume = hume;
+        //Registramos nuevos datos
+        var query = "INSERT INTO registro_tp_hm(RegistroTemperatura, RegistroHumedad) VALUES ("+ temp + ", " + hume + ")";
+        con.query(query, function (err, result, fields) {
+            if (err) throw err;
+            console.log(">> MYSQL - Registro insertada correctamente");
+        });
+    }
   }
 });
 
