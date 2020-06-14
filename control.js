@@ -52,7 +52,7 @@ setInterval(function () {
     let query = 'SELECT * FROM Device_Registro WHERE IDEstado = 2;';
     let command = '';
   
-    con.query(query, function (err, result, fields) {
+    con.query(query, function (err, results, fields) {
         results.forEach(result => {
             console.log(result);
             if (err) {
