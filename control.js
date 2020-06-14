@@ -51,23 +51,29 @@ client.on('connect', () => {
 setInterval(function () {
     let query = 'SELECT * FROM Device_Registro WHERE IDEstado = 2;';
     let command = '';
+    let id = '1';
   
     con.query(query, function (err, results, fields) {
         results.forEach(result => {
             command = JSON.parse(result.UltimoRegistro);
-            console.log(result.IDRegistro);
+            id = result.IDRegistro;
             if (err) {
                 console.log(">> MYSQL - Conexión a MYSQL fallida! ERROR: " + err);
             } else {
                 client.publish('command', command.power, (error) => {
-                    if (error) {
-                        console.log('>> MQTT -Suscripción fallida! ' + error);
+                    if (!error) {
+                        let sql = 'UPDATE Device_Registro SET IDEstado = 1 WHERE IDRegistro = ' + id + ';';
+                        con.query(sql, function (err, result) {
+                            if (err) throw err;
+                            console.log(result.affectedRows + " record(s) updated");
+                            console.log('>> MQTT -Suscripción correcta! Command:' + command.power);
+                        });
                     } else {
-                        console.log('>> MQTT -Suscripción correcta! Command:' + command.power);
-                        con.query('UPDATE Device_Registro SET IDEstado = 1 WHERE IDRegistro = ' + result.IDRegistro, function (error, resultados, fields) { });
+                        console.log('>> MQTT -Suscripción fallida! ' + error);
                     }
                 });
             }
         });
     });
+    return;
 });
