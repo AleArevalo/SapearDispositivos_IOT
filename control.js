@@ -55,7 +55,7 @@ setInterval(function () {
     con.query(query, function (err, results, fields) {
         results.forEach(result => {
             command = JSON.parse(result.UltimoRegistro);
-            console.log(command.power);
+            console.log(result.IDRegistro);
             if (err) {
                 console.log(">> MYSQL - Conexión a MYSQL fallida! ERROR: " + err);
             } else {
@@ -63,11 +63,11 @@ setInterval(function () {
                     if (error) {
                         console.log('>> MQTT -Suscripción fallida! ' + error);
                     } else {
-                        console.log('>> MQTT -Suscripción correcta! Command:' + command);
-                        con.query('UPDATE Device_Registro SET IDEstado = 1 WHERE IDRegistro = ' + result.IDRegistro);
+                        console.log('>> MQTT -Suscripción correcta! Command:' + command.power);
+                        con.query('UPDATE Device_Registro SET IDEstado = 1 WHERE IDRegistro = ' + result.IDRegistro, function (error, resultados, fields) { });
                     }
                 });
             }
         });
     });
-}, 5000);
+});
