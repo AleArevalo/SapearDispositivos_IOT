@@ -21,7 +21,7 @@ con.connect(function(err){
 let options = {
     port: 1883,
     host: 'latamdomotica.com',
-    clientId: 'sapear_' + Math.round(Math.random() * (0- 10000) * -1) ,
+    clientId: 'comandante_001' ,
     username: 'aarevalo',
     password: 'aarevalold',
     keepalive: 60,
@@ -53,7 +53,10 @@ setInterval(function () {
     let command = '';
   
     con.query(query, function (err, result, fields) {
-        console.log(result);
+        let resultado = JSON.parse(result);
+
+        console.log(resultado.UltimoRegistro);
+
         if (err) {
             console.log(">> MYSQL - Conexión a MYSQL fallida! ERROR: " + err);
         } else {
@@ -66,4 +69,4 @@ setInterval(function () {
             });
         }
     });
-});  
+}, 5000);
