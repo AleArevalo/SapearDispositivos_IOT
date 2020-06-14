@@ -54,7 +54,7 @@ setInterval(function () {
   
     con.query(query, function (err, results, fields) {
         results.forEach(result => {
-            console.log(result);
+            console.log(result.UltimoRegistro);
             if (err) {
                 console.log(">> MYSQL - Conexión a MYSQL fallida! ERROR: " + err);
             } else {
