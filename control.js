@@ -59,11 +59,12 @@ setInterval(function () {
             if (err) {
                 console.log(">> MYSQL - Conexión a MYSQL fallida! ERROR: " + err);
             } else {
-                client.publish('command', 'on', (error) => {
-                    if (!error) {
+                client.publish('command', command.power, (error) => {
+                    if (error) {
                         console.log('>> MQTT -Suscripción fallida! ' + error);
                     } else {
                         console.log('>> MQTT -Suscripción correcta! Command:' + command);
+                        con.query('UPDATE Device_Registro SET IDEstado = 1 WHERE IDRegistro = ' + result.IDRegistro);
                     }
                 });
             }
