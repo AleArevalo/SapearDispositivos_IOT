@@ -54,7 +54,8 @@ setInterval(function () {
   
     con.query(query, function (err, results, fields) {
         results.forEach(result => {
-            console.log(result.UltimoRegistro);
+            command = JSON.parse(result.UltimoRegistro);
+            console.log(command.power);
             if (err) {
                 console.log(">> MYSQL - Conexión a MYSQL fallida! ERROR: " + err);
             } else {
