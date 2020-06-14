@@ -53,20 +53,19 @@ setInterval(function () {
     let command = '';
   
     con.query(query, function (err, result, fields) {
-        let resultado = JSON.parse(result);
-
-        console.log(resultado.UltimoRegistro);
-
-        if (err) {
-            console.log(">> MYSQL - Conexión a MYSQL fallida! ERROR: " + err);
-        } else {
-            client.publish('command', 'on', (error) => {
-                if (!error) {
-                    console.log('>> MQTT -Suscripción fallida! ' + error);
-                } else {
-                    console.log('>> MQTT -Suscripción correcta! Command:' + command);
-                }
-            });
-        }
+        results.forEach(result => {
+            console.log(result);
+            if (err) {
+                console.log(">> MYSQL - Conexión a MYSQL fallida! ERROR: " + err);
+            } else {
+                client.publish('command', 'on', (error) => {
+                    if (!error) {
+                        console.log('>> MQTT -Suscripción fallida! ' + error);
+                    } else {
+                        console.log('>> MQTT -Suscripción correcta! Command:' + command);
+                    }
+                });
+            }
+        });
     });
 }, 5000);
