@@ -24,7 +24,7 @@ con.connect(function(err){
 //CREDENCIALES MQTT
 var options = {
   port: 1883,
-  host: 'latamcodigo.com',
+  host: 'latamdomotica.com',
   clientId: 'sapear_' + Math.round(Math.random() * (0- 10000) * -1) ,
   username: 'aarevalo',
   password: 'aarevalold',
@@ -36,7 +36,7 @@ var options = {
   encoding: 'utf8'
 };
 
-var client = mqtt.connect("mqtt://latamcodigo.com", options);
+var client = mqtt.connect("mqtt://latamdomotica.com", options);
 
 //SE REALIZA LA CONEXION
 client.on('connect', () => {
@@ -65,7 +65,7 @@ client.on('message', function (topic, message) {
         UltimoTemp = temp;
         UltimoHume = hume;
         //Registramos nuevos datos
-        var query = "INSERT INTO registro_tp_hm(RegistroTemperatura, RegistroHumedad) VALUES ("+ temp + ", " + hume + ")";
+        var query = "INSERT INTO registro_tp_hm(IDDispositivo, RegistroTemperatura, RegistroHumedad) VALUES (1, "+ temp + ", " + hume + ")";
         con.query(query, function (err, result, fields) {
             if (err) throw err;
             console.log(">> MYSQL - Registro insertada correctamente");
