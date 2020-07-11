@@ -17,7 +17,6 @@ con.connect(function(err) {
     console.log(">> MYSQL - Conexión a MYSQL exitosa!!!")
 });
 
-
 //CREDENCIALES MQTT
 var options = {
     port: 1883,
