@@ -1,42 +1,39 @@
 var mysql = require('mysql');
 var mqtt = require('mqtt');
 
-let UltimoTemp = 0;
-let UltimoHume = 0;
-
 //CREDENCIALES MYSQL
 var con = mysql.createConnection({
-  host: "server.latamcodigo.com",
-  user: "admin",
-  password: "$MYSQLadmin/lc.1590",
-  database: "latamdomotica_registro"
+    host: "server.latamcodigo.com",
+    user: "admin_ld",
+    password: "$MYSQLadmin/ld.1590",
+    database: "LatamDomotica"
 });
 
 //nos conectamos
-con.connect(function(err){
+con.connect(function(err) {
     if (err) throw err;
-  
+
     //una vez conectados, podemos hacer consultas.
     console.log(">> MYSQL - Conexión a MYSQL exitosa!!!")
 });
-  
+
 
 //CREDENCIALES MQTT
 var options = {
-  port: 1883,
-  host: 'latamdomotica.com',
-  clientId: 'sapear_' + Math.round(Math.random() * (0- 10000) * -1) ,
-  username: 'aarevalo',
-  password: 'aarevalold',
-  keepalive: 60,
-  reconnectPeriod: 1000,
-  protocolId: 'MQIsdp',
-  protocolVersion: 3,
-  clean: true,
-  encoding: 'utf8'
+    port: 1883,
+    host: 'mqtt.latamdomotica.com',
+    clientId: 'sapear_' + Math.round(Math.random() * (0 - 10000) * -1),
+    username: 'aarevalo',
+    password: 'aarevalold',
+    keepalive: 60,
+    reconnectPeriod: 1000,
+    protocolId: 'MQIsdp',
+    protocolVersion: 3,
+    clean: true,
+    encoding: 'utf8'
 };
 
-var client = mqtt.connect("mqtt://latamdomotica.com", options);
+var client = mqtt.connect("mqtt://mqtt.latamdomotica.com", options);
 
 //SE REALIZA LA CONEXION
 client.on('connect', () => {
@@ -52,34 +49,33 @@ client.on('connect', () => {
 });
 
 //CUANDO SE RECIBE MENSAJE
-client.on('message', function (topic, message) {
-  console.log(">> MQTT - Mensaje recibido desde -> " + topic + " Mensaje -> " + message.toString());
-  if (topic == "values"){
-    var msg = message.toString();
-    var sp = msg.split(",");
-    var temp = sp[0];
-    var hume = sp[1];
+client.on('message', function(topic, message) {
+    console.log(">> MQTT - Mensaje recibido desde -> " + topic + " Mensaje -> " + message.toString());
+    if (topic == "values") {
+        const msg = message.toString();
+        const sp = msg.split(",");
+        const serial = sp[0];
+        const temperatura = sp[1];
+        const humedad = sp[2];
+        const pantalla = sp[3];
+        const json = '{"temperatura":"' + temperatura + '","humedad":"' + humedad + '","pantalla":"' + pantalla + '"}';
 
-    if(UltimoTemp != temp && UltimoHume != hume){
-        //Registramos nuevos valores globales
-        UltimoTemp = temp;
-        UltimoHume = hume;
         //Registramos nuevos datos
-        var query = "INSERT INTO registro_tp_hm(IDDispositivo, RegistroTemperatura, RegistroHumedad) VALUES (1, "+ temp + ", " + hume + ")";
-        con.query(query, function (err, result, fields) {
+        const query = "INSERT INTO Dispositivo_Registro(NumeroSerie, DataRegistro) VALUES ('" + serial + "', '" + json + "')";
+        con.query(query, function(err, result, fields) {
             if (err) throw err;
             console.log(">> MYSQL - Registro insertada correctamente");
         });
+
     }
-  }
 });
 
 //para mantener la sesión con mysql abierta
-setInterval(function () {
-    var query ='SELECT 1 + 1 as result';
-  
-    con.query(query, function (err, result, fields) {
-      if (err) throw err;
+setInterval(function() {
+    var query = 'SELECT 1 + 1 as result';
+
+    con.query(query, function(err, result, fields) {
+        if (err) throw err;
     });
-  
-}, 5000);  
+
+}, 5000);

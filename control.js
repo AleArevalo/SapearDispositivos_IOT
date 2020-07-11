@@ -10,9 +10,9 @@ let con = mysql.createConnection({
 });
 
 //nos conectamos
-con.connect(function(err){
+con.connect(function(err) {
     if (err) throw err;
-  
+
     //una vez conectados, podemos hacer consultas.
     console.log(">> MYSQL - Conexión a MYSQL exitosa!!!");
 });
@@ -21,7 +21,7 @@ con.connect(function(err){
 let options = {
     port: 1883,
     host: 'latamdomotica.com',
-    clientId: 'comandante_001' ,
+    clientId: 'comandante_001',
     username: 'aarevalo',
     password: 'aarevalold',
     keepalive: 60,
@@ -31,7 +31,7 @@ let options = {
     clean: true,
     encoding: 'utf8'
 };
-  
+
 var client = mqtt.connect("mqtt://latamdomotica.com", options);
 
 //SE REALIZA LA CONEXION
@@ -48,12 +48,12 @@ client.on('connect', () => {
 });
 
 //Comprobar si hay comandos pendientes
-setInterval(function () {
+setInterval(function() {
     let query = 'SELECT * FROM Device_Registro WHERE IDEstado = 2;';
     let command = '';
     let id = '1';
-  
-    con.query(query, function (err, results, fields) {
+
+    con.query(query, function(err, results, fields) {
         results.forEach(result => {
             command = JSON.parse(result.UltimoRegistro);
             id = result.IDRegistro;
@@ -63,7 +63,7 @@ setInterval(function () {
                 client.publish('command', command.power, (error) => {
                     if (!error) {
                         let sql = 'UPDATE Device_Registro SET IDEstado = 1 WHERE IDRegistro = ' + id + ';';
-                        con.query(sql, function (err, result) {
+                        con.query(sql, function(err, result) {
                             if (err) throw err;
                             console.log(result.affectedRows + " record(s) updated");
                             console.log('>> MQTT -Suscripción correcta! Command:' + command.power);
