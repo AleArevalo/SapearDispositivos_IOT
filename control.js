@@ -49,6 +49,7 @@ client.on('connect', () => {
 
 //Comprobar si hay comandos pendientes
 setInterval(function () {
+    console.log('>> COMANDANTE - Consultando comandos pendientes.');
     let query = 'SELECT * FROM Device_Registro WHERE IDEstado = 2;';
     let command = '';
     let id = '1';

@@ -1,7 +1,6 @@
 var mysql = require('mysql');
 var mqtt = require('mqtt');
 
-
 let UltimoTemp = 0;
 let UltimoHume = 0;
 
@@ -26,7 +25,7 @@ con.connect(function(err){
 var options = {
   port: 1883,
   host: 'mqtt.latamdomotica.com',
-  clientId: 'sapear_server_lc',
+  clientId: 'sapear_ + Math.round(Math.random() * (0- 10000) * -1) ,
   username: 'aarevalo',
   password: 'aarevalold',
   keepalive: 60,
@@ -37,7 +36,7 @@ var options = {
   encoding: 'utf8'
 };
 
-var client = mqtt.connect("mqtt://mqtt.latamdomotica.com", options);
+var client = mqtt.connect("mqtt://latamdomotica.com", options);
 
 //SE REALIZA LA CONEXION
 client.on('connect', () => {
