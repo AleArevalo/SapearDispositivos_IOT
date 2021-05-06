@@ -1,4 +1,6 @@
-# SapearLatamDomotica
+# Latam código - Latam Domótica
+
+<h1 align="center">Sapear Dispositivos</h1>
 
 Aplicación NodeJS - Conexión a base de datos MYSQL (Futuro ajuste a MongoDB)
 
