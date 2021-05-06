@@ -4,9 +4,9 @@ var mqtt = require('mqtt');
 //CREDENCIALES MYSQL
 var con = mysql.createConnection({
     host: "server.latamcodigo.com",
-    user: "admin_ld",
-    password: "$MYSQLadmin/ld.1590",
-    database: "LatamDomotica"
+    user: "",
+    password: "",
+    database: ""
 });
 
 //nos conectamos
@@ -22,8 +22,8 @@ var options = {
     port: 1883,
     host: 'mqtt.latamdomotica.com',
     clientId: 'sapear_' + Math.round(Math.random() * (0 - 10000) * -1),
-    username: 'aarevalo',
-    password: 'aarevalold',
+    username: '',
+    password: '',
     keepalive: 60,
     reconnectPeriod: 1000,
     protocolId: 'MQIsdp',
